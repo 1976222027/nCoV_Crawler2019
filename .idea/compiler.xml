@@ -11,4 +11,9 @@
       </profile>
     </annotationProcessing>
   </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="2019nCoV" options="-extdirs D:\JavaWebServer\nCoV_Crawler2019/lib" />
+    </option>
+  </component>
 </project>

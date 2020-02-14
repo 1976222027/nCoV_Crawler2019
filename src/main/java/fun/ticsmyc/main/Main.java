@@ -14,13 +14,13 @@ import java.util.TimerTask;
  */
 public class Main {
     public static void main(String[] args) {
-        //每十分钟执行一次
+        //每十分钟执行一次  3600 000一小时
         new Timer("testTimer").schedule(new TimerTask() {
             @Override
             public void run() {
                 fffffuck();
             }
-        }, 1000,600000);
+        }, 1000,3600000);
     }
 
     public static void fffffuck(){

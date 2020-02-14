@@ -6,9 +6,9 @@
 
 
 <configuration>
-
+<!--配置数据库文件JDBC-->
     <properties resource="dao.properties" />
-
+<!--先爬html 后pojo-->
     <typeAliases>
         <package name="fun.ticsmyc.pojo"/>
     </typeAliases>

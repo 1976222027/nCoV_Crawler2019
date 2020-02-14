@@ -41,9 +41,7 @@ public class InformationService {
     public void getNews(){
         //获取HTML数据
         Tools.getPageByJSoup(Crawler.URL);
-
         //提取static信息的json数据
-
         String staticInformation=null;
         //解析static信息的json数据
         Statistics statisticsInformation=null;
@@ -63,7 +61,7 @@ public class InformationService {
 
         if (statisticsNews != null){
             //总数据发生变化，各省数据更新
-      //提取其他信息的json数据
+            //提取其他信息的json数据
             String timelineServiceInformation= Tools.getInformation(Crawler.TIME_LINE_REGEX_TEMPLATE,"id",Crawler.TIME_LINE_ATTRIBUTE);
             String areaInformation=Tools.getInformation(Crawler.AREA_INFORMATION_REGEX_TEMPLATE,"id",Crawler.AREA_INFORMATION_ATTRIBUTE);
             //解析
@@ -72,7 +70,7 @@ public class InformationService {
 
             timeLineNews = informationDao.insertTimeLine(timeLineList);
             provinceNews = informationDao.insertProvince(areaStatList);
-
+            //发送邮件 实时新闻，统计，变化
             sendEmail(timeLineNews,provinceNews,statisticsNews);
         }
 
@@ -100,7 +98,7 @@ public class InformationService {
             }
         }
 
-        //邮件通知
+        //邮件通知  emailContent拼接邮件内容
         StringBuilder emailContent=new StringBuilder();
         if(timeLineNews!=null && timeLineNews.length()!=0){
             emailContent.append("----------------------新闻--------------------<br/>");
@@ -119,6 +117,7 @@ public class InformationService {
             if(toEmailList!= null){
                 for(String toUserEmail : toEmailList){
                     if(!toUserEmail .equals("") ){
+                        //读取配置文件 发送邮件
                         EmailUtil.sendEmail((String) properties.get("email.authCode"), (String) properties.get("email.fromEmail"),toUserEmail,dateFormat.format(new Date())+"疫情动态",emailContent.toString());
                         Thread.sleep(5000);
                     }

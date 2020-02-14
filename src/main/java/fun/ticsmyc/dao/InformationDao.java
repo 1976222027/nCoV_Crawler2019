@@ -35,9 +35,9 @@ public class InformationDao {
             logger.error("mybatis.xml加载错误");
         }
         //使用工厂设计模式
-        SqlSessionFactory factory =new SqlSessionFactoryBuilder().build(is);
+        SqlSessionFactory factory =new SqlSessionFactoryBuilder().build(is);//读取流信息
         //生产SqlSession
-        session = factory.openSession();
+        session = factory.openSession();//数据库携带
         if(is != null){
             try {
                 is.close();
@@ -47,11 +47,9 @@ public class InformationDao {
         }
     }
 
-
     public void destory(){
         session.close();
     }
-
 
     /**
      * 添加实时消息
@@ -114,10 +112,11 @@ public class InformationDao {
 
         AreaStatMapper areaStatMapper = session.getMapper(AreaStatMapper.class);
         for(AreaStat areaStat : areaStatsList){
+            //查询省信息对比
             AreaStat oldAreaStat =selectProvince(areaStat.getProvinceName());
             if(oldAreaStat!= null ){
                 //库中已经有了这个省份
-                if(areaStat.equals(oldAreaStat)){
+                if(areaStat.equals(oldAreaStat)){//新旧数据一样
                     //数据一致 不添加
                     log.append("+E0"+"  ");
                 }else{
@@ -136,9 +135,11 @@ public class InformationDao {
                 provinceNews.append(getNumber(areaStat)+"<br><br>");
                 log.append("+N"+res+"  ");
             }
+            //遍历市
             List<AreaStat.CitiesBean> cityList =areaStat.getCities();
             for(AreaStat.CitiesBean city :cityList){
                 city.setProvinceName(areaStat.getProvinceName());
+                //查询市信息
                 AreaStat.CitiesBean oldCity = selectCity(city.getCityName());
                 if(oldCity!= null){
                     //已有该城
@@ -156,6 +157,16 @@ public class InformationDao {
                     int res = areaStatMapper.addCity(city);
                     log.append("N"+res+"  ");
                 }
+            }
+
+            //add 添加河北省数据
+            if("河北省".equals(areaStat.getProvinceName())){
+                areaStat.setModifyTime( System.currentTimeMillis()/1000);
+                int res=areaStatMapper.addProvince(areaStat);
+                log.append("+H"+res+"  ");
+                provinceNews.append("本地："+areaStat.getProvinceName()+"<br/>");
+                provinceNews.append(getNumber(areaStat));
+                provinceNews.append(getNumberChange(oldAreaStat,areaStat)+"<br><br>");
             }
         }
         logger.info(log.toString());

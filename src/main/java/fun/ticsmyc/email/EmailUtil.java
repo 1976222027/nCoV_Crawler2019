@@ -38,7 +38,7 @@ public class EmailUtil {
         Session session = Session.getDefaultInstance(properties, new Authenticator() {
             @Override
             protected PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication("qq邮箱","QQ邮箱16位授权码");
+                return new PasswordAuthentication("a.1000@foxmail.com","ngbwjkavzpwtbddg");
             }
         });
         //开启debug模式
