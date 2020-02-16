@@ -1,9 +1,9 @@
 package fun.ticsmyc.dao;
-import java.sql.*;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 
 /**
  * 测试jdbc
@@ -18,16 +18,17 @@ public class JDBCTest {
         try {
             // 加载驱动
             //调用froName("x")会初始化名为x的类
-            Class.forName("com.mysql.jdbc.Driver");
+//            Class.forName("com.mysql.jdbc.Driver");
+            Class.forName("com.mysql.cj.jdbc.Driver");
             // 获取数据库连接
-            String url = "jdbc:mysql://127.0.0.1:3306/2019ncov";
+            String url = "jdbc:mysql://localhost:3306/2019ncov?serverTimezone=GMT%2B8&useSSL=false&characterEncoding=utf8";
             String user = "root";
             String password = "root";
             //建立连接
             connection = DriverManager.getConnection(url, user, password);
             // 获取statement，preparedStatement
-            String sql1 = "select * from tb_user where id=?";
-            String sql = "select * from tb_user where email=?";
+            String sql = "select * from tb_user where id=?";
+            String sql2 = "select * from tb_user where email=?";
             prepareStatement = connection.prepareStatement(sql);
             // 设置参数
             prepareStatement.setLong(1, 1);
